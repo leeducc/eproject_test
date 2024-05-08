@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mysqli_num_rows($result) > 0) {
         // User already exists, update user status to subscriber
-        $updateQuery = "UPDATE users SET status = 'subscriber' WHERE email = '$email'";
+        $updateQuery = "UPDATE users SET substatus = 'subscriber' WHERE email = '$email'";
         mysqli_query($conn, $updateQuery);
     } 
 

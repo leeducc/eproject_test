@@ -2,6 +2,10 @@
 include 'php/config.php';
 ?>
 
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,103 +38,100 @@ include 'php/config.php';
 <body>
 
   <!-- ======= Header ======= -->
-<header id="header" class="d-flex align-items-center">
-  <div class="container d-flex align-items-center justify-content-between">
+  <header id="header" class="d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
 
-    <h1 class="logo"><a href="home.php"><?php echo $websiteName; ?><span>.</span></a></h1>
+      <h1 class="logo"><a href="home.php"><?php echo $websiteName; ?><span>.</span></a></h1>
 
-    <nav id="navbar" class="navbar">
-      <ul>
-        <li><a class="nav-link scrollto active" href="#hero">Intro</a></li>
-        <li><a class="nav-link scrollto" href="about-us.html">About</a></li>
-        <li><a class="nav-link scrollto" href="#product">Product</a></li>
-        <li class="dropdown">
-          <a href="#"><span>Content</span> <i class="bi bi-chevron-down"></i></a>
-          <ul>
-            <li><a href="#">Drop Down 1</a></li>
-            <li><a href="#">Drop Down 2</a></li>
-            <li><a href="#">Drop Down 3</a></li>
-            <li><a href="#">Drop Down 4</a></li>
-          </ul>
-        </li>
-        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-      </ul>
-      <i class="bi bi-search nav__search" id="search-btn"></i>
-      <?php
-      // Check if user is logged in
-      if (isset($_SESSION['user_id'])) {
-        // If logged in, display user icon with dropdown menu
-        ?>
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person-fill"></i> <!-- User icon -->
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Cart</a></li>
-            <li><a class="dropdown-item" href="login_process.php?logout=true">Logout</a></li> <!-- Logout link -->
-          </ul>
-        </div>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Intro</a></li>
+          <li><a class="nav-link scrollto" href="about-us.php">About</a></li>
+          <li><a class="nav-link scrollto" href="product-list.php">Product</a></li>
+          <li class="dropdown">
+            <a href="#"><span>Content</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Drop Down 1</a></li>
+              <li><a href="#">Drop Down 2</a></li>
+              <li><a href="#">Drop Down 3</a></li>
+              <li><a href="#">Drop Down 4</a></li>
+            </ul>
+          </li>
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-search nav__search" id="search-btn"></i>
         <?php
-      } else {
-        // If not logged in, display login button
+        if (isset($_SESSION['SESSION_EMAIL'])) {
+          echo '<div class="dropdown">';
+          echo '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">';
+          echo '<i class="bi bi-person-fill"></i>'; // User icon
+          echo '</button>';
+          echo '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+          echo '<li><a class="dropdown-item" href="#">Profile</a></li>';
+          echo '<li><a class="dropdown-item" href="#">Cart</a></li>';
+          echo '<li><a class="dropdown-item" href="logout.php">Logout</a></li>'; // Logout link
+          echo '</ul>';
+          echo '</div>';
+        } else {
+          echo '<i class="bi bi-person nav__login" id="login-btn"></i>';
+        }
         ?>
-        <i class="bi bi-person nav__login" id="login-btn"></i>
-      <?php } ?>
 
-      <i class="bi bi-list mobile-nav-toggle"></i>
+        <i class="bi bi-list mobile-nav-toggle"></i>
 
-    </nav><!-- .navbar -->
+      </nav><!-- .navbar -->
 
-  </div>
-</header><!-- End Header -->
+    </div>
+
+  </header><!-- End Header -->
   <!--==================== SEARCH ====================-->
-<div class="search" id="search">
-  <i class="bi bi-x search__close" id="search-close"></i>
-  <form action="" class="search__form">
-    <i class="bi bi-search search__icon"></i>
-    <input type="search" placeholder="What are you looking for?" class="search__input">
-  </form>
-</div>
+  <div class="search" id="search">
+    <i class="bi bi-x search__close" id="search-close"></i>
+    <form action="" class="search__form">
+      <i class="bi bi-search search__icon"></i>
+      <input type="search" placeholder="What are you looking for?" class="search__input">
+    </form>
+  </div>
 
-<!--==================== LOGIN ====================-->
-<div class="login" id="login">
-  <i class="bi bi-x login__close" id="login-close"></i>
-  <form action="" class="login__form">
-    <h2 class="login__title">Log In</h2>
+  <!--==================== LOGIN ====================-->
+  <div class="login" id="login">
+    <i class="bi bi-x login__close" id="login-close"></i>
+    <form action="login.php" class="login__form">
+      <h2 class="login__title">Log In</h2>
 
-    <div class="login__group">
-      <div>
-        <label for="email" class="login__label">Email</label>
-        <input type="email" placeholder="Write your email" id="login_email" class="login__input">
+      <div class="login__group">
+      <?php echo $msg; ?>
+        <div>
+          <label for="email" class="login__label">Email</label>
+          <input type="email" placeholder="Write your email" name="email" id="login_email" class="login__input">
+        </div>
+
+        <div>
+          <label for="password" class="login__label">Password</label>
+          <input type="password" placeholder="Enter your password" name="password" id="login_password" class="login__input">
+        </div>
       </div>
 
       <div>
-        <label for="password" class="login__label">Password</label>
-        <input type="password" placeholder="Enter your password" id="login_password" class="login__input">
+        <p class="login__signup">
+          You do not have an account? <a href="register.php">Register</a>
+        </p>
+
+        <a href="#" class="login__forgot">
+          You forgot your password?
+        </a>
+
+        <button type="submit" class="login__button">Log In</button>
       </div>
-    </div>
-
-    <div>
-      <p class="login__signup">
-        You do not have an account? <a href="login_signup.html#sign-up-form">Sign up</a>
-      </p>
-
-      <a href="#" class="login__forgot">
-        You forgot your password?
-      </a>
-
-      <button type="submit" class="login__button">Log In</button>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
 
 
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex align-items-center">
     <div class="container" data-aos="zoom-out" data-aos-delay="100">
-      <h1>Welcome to <span>RainRenew</span></h1>
+      <h1>Welcome to <span><?php echo $websiteName; ?></span></h1>
       <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </h2>
       <div class="d-flex">
         <a href="#product" class="btn-get-started scrollto">Get Started</a>
@@ -184,65 +185,54 @@ include 'php/config.php';
     </section>End Featured Services Section -->
 
 
-    <?php
-    // Include database connection file
-    include_once 'php/dbconnect.php';
+    <!-- ======= product Section ======= -->
+    <section id="product" class="product">
+      <div class="container" data-aos="fade-up">
 
-    // Query to fetch categories
-    $sql_categories = "SELECT * FROM categories";
-    $result_categories = mysqli_query($conn, $sql_categories);
+        <div class="section-title">
+          <h2>product</h2>
+          <h3>Featured <span>products</span></h3>
+          <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p>
+        </div>
 
-    // Function to fetch products with category names
-    function fetchProductsWithCategories($conn)
-    {
-      $sql_products = "SELECT p.*, c.category_name 
-                     FROM products p
-                     INNER JOIN categories c ON p.category_id = c.category_id";
-      $result_products = mysqli_query($conn, $sql_products);
-      return $result_products;
-    }
 
-    ?>
+        <div class="row product-container" data-aos="fade-up" data-aos-delay="200">
 
-    <div class="row" data-aos="fade-up" data-aos-delay="100">
-      <div class="col-lg-12 d-flex justify-content-center">
-        <ul id="product-filters">
-          <li data-filter="*" class="filter-active">All</li>
-          <?php while ($row = mysqli_fetch_assoc($result_categories)) { ?>
-            <li data-filter=".filter-<?php echo $row['category_name']; ?>"><?php echo $row['category_name']; ?></li>
-          <?php } ?>
-        </ul>
-      </div>
-    </div>
+          <?php
+          include 'php/dbconnect.php'; // Include the database connection file
 
-    <div class="row product-container" data-aos="fade-up" data-aos-delay="200">
-      <?php
-      // Fetch products with category names
-      $all_products = fetchProductsWithCategories($conn);
+          // Query to select the top 10 products
+          $query = "SELECT * FROM products ORDER BY price DESC LIMIT 10";
 
-      // Function to generate product HTML
-      function generateProductHTML($row)
-      {
-        echo '<div class="col-lg-4 col-md-6 product-item filter-' . $row['category_name'] . '">';
-        echo '<img src="' . $row['image'] . '" class="img-fluid" alt="">';
-        echo '<div class="product-info">';
-        echo '<h4>' . $row['product_name'] . '</h4>';
-        echo '<p>' . $row['price'] . '</p>';
-        echo '<a href="#" class="add-to-cart" data-product-id="' . $row['product_id'] . '"><i class="bx bx-plus"></i></a>';
-        echo '<a href="product-details.html" class="details-link" title="More Details"><i class="bx bx-link"></i></a>';
-        echo '</div></div>';
-      }
+          // Execute the query
+          $result = mysqli_query($conn, $query);
 
-      // Generate HTML for all products
-      while ($product_row = mysqli_fetch_assoc($all_products)) {
-        generateProductHTML($product_row);
-      }
+          // Check if there are any results
+          if (mysqli_num_rows($result) > 0) {
+            // Loop through each row
+            while ($row = mysqli_fetch_assoc($result)) {
+              // Output HTML for each product
+              echo '<div class="col-lg-4 col-md-6 product-item">';
+              echo '<img src="' . $row['image'] . '" class="img-fluid" alt="">';
+              echo '<div class="product-info">';
+              echo '<h4>' . $row['product_name'] . '</h4>';
+              echo '<p>$' . $row['price'] . '</p>';
+              echo '<p>' . $row['description'] . '</p>';
+              echo '<a href="product-details.php?product_id=' . $row['product_id'] . '" class="details-link" title="More Details"><i class="bx bx-link"></i></a>';
+              echo '</div>';
+              echo '</div>';
+            }
+          } else {
+            // If no products are found
+            echo 'No products found.';
+          }
 
-      // Close database connection
-      mysqli_close($conn);
-      ?>
-    </div>
+          // Close the connection
+          mysqli_close($conn);
+          ?>
 
+        </div>
+    </section><!-- End product Section -->
 
 
     <!-- ======= Contact Section ======= -->
@@ -260,7 +250,7 @@ include 'php/config.php';
             <div class="info-box mb-4">
               <i class="bx bx-map"></i>
               <h3>Our Address</h3>
-              <p>A108 Adam Street, New York, NY 535022</p>
+              <p><?php echo $address; ?></p>
             </div>
           </div>
 
@@ -268,7 +258,7 @@ include 'php/config.php';
             <div class="info-box  mb-4">
               <i class="bx bx-envelope"></i>
               <h3>Email Us</h3>
-              <p>contact@example.com</p>
+              <p><?php echo $email; ?></p>
             </div>
           </div>
 
@@ -276,7 +266,7 @@ include 'php/config.php';
             <div class="info-box  mb-4">
               <i class="bx bx-phone-call"></i>
               <h3>Call Us</h3>
-              <p>+1 5589 55488 55</p>
+              <p><?php echo $phone; ?></p>
             </div>
           </div>
 
